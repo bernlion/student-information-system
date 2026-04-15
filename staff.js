@@ -25,7 +25,6 @@ let users=JSON.parse(localStorage.getItem("users"))||[];
 let s={
 id:studentId.value,
 password:studentPassword.value,
-
 name:studentName.value,
 
 regno:regno.value,
@@ -68,18 +67,25 @@ localStorage.setItem("users",JSON.stringify(users));
 
 /* Toggle Students */
 function toggleStudents(){
-let t=document.getElementById("studentTable");
-t.innerHTML==="" ? viewStudents() : t.innerHTML="";
+
+let table=document.getElementById("studentTable");
+
+if(table.innerHTML.trim()===""){
+viewStudents();
+}else{
+table.innerHTML="";
 }
 
-/* View */
+}
+
+/* View Students */
 function viewStudents(){
 
 let users=JSON.parse(localStorage.getItem("users"))||[];
 
-let t=document.getElementById("studentTable");
+let table=document.getElementById("studentTable");
 
-t.innerHTML=`
+table.innerHTML=`
 <tr>
 <th>ID</th>
 <th>Name</th>
@@ -88,22 +94,23 @@ t.innerHTML=`
 <th>Internal %</th>
 <th>Edit</th>
 <th>Save</th>
-</tr>`;
+</tr>
+`;
 
 users.forEach((u,i)=>{
 
-let r=t.insertRow();
+let row=table.insertRow();
 
-r.insertCell(0).innerText=u.id;
-r.insertCell(1).innerText=u.name;
-r.insertCell(2).innerText=u.dept;
-r.insertCell(3).innerText=u.attendance;
-r.insertCell(4).innerText=calculatePercentage(u)+"%";
+row.insertCell(0).innerText=u.id;
+row.insertCell(1).innerText=u.name;
+row.insertCell(2).innerText=u.dept;
+row.insertCell(3).innerText=u.attendance;
+row.insertCell(4).innerText=calculatePercentage(u)+"%";
 
-r.insertCell(5).innerHTML=
+row.insertCell(5).innerHTML=
 `<button onclick="editStudent(${i})">Edit</button>`;
 
-r.insertCell(6).innerHTML=
+row.insertCell(6).innerHTML=
 `<button onclick="saveStudent()">Save</button>`;
 
 });
@@ -120,7 +127,6 @@ editingIndex=i;
 
 studentId.value=u.id;
 studentPassword.value=u.password;
-
 studentName.value=u.name;
 
 regno.value=u.regno;
@@ -150,41 +156,35 @@ subMark6.value=u.subMark6;
 
 }
 
-/* Logout */
-function logout(){
-window.location.href="index.html";
-}/* Toggle Reports */
+/* REPORTS */
 function toggleReports(){
 
-let div = document.getElementById("reportSection");
+let div=document.getElementById("reportSection");
 
-if(div.classList.contains("hidden")){
-div.classList.remove("hidden");
-viewReports();
+if(div.style.display==="block"){
+div.style.display="none";
 }else{
-div.classList.add("hidden");
+div.style.display="block";
+viewReports();
 }
 
 }
 
-/* View Reports */
 function viewReports(){
 
-let reports =
-JSON.parse(localStorage.getItem("reports")) || [];
+let reports=JSON.parse(localStorage.getItem("reports"))||[];
 
-let div =
-document.getElementById("reportSection");
+let div=document.getElementById("reportSection");
 
-div.innerHTML = "";
+div.innerHTML="";
 
-reports.forEach((rep,index)=>{
+reports.forEach((rep,i)=>{
 
-let p = document.createElement("p");
+let p=document.createElement("p");
 
-p.innerHTML =
+p.innerHTML=
 "<b>"+rep.id+"</b>: "+rep.issue+
-"<br><button onclick='sendReply("+index+")'>Reply</button>";
+`<br><button onclick="reply(${i})">Reply</button>`;
 
 div.appendChild(p);
 
@@ -192,17 +192,20 @@ div.appendChild(p);
 
 }
 
-/* Send Reply */
-function sendReply(index){
+function reply(i){
 
-let reports =
-JSON.parse(localStorage.getItem("reports"));
+let reports=JSON.parse(localStorage.getItem("reports"));
 
-reports[index].reply =
-"Your report was reviewed. Changes will appear in 2–3 days";
+reports[i].reply=
+"Your report was reviewed. Changes in 2–3 days";
 
-localStorage.setItem("reports", JSON.stringify(reports));
+localStorage.setItem("reports",JSON.stringify(reports));
 
 alert("Reply Sent");
 
+}
+
+/* Logout */
+function logout(){
+window.location.href="index.html";
 }

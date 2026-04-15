@@ -1,12 +1,12 @@
 function loadStudent(){
 
-let user = JSON.parse(localStorage.getItem("currentUser"));
+let user=JSON.parse(localStorage.getItem("currentUser"));
 
-let div = document.getElementById("studentDetails");
+let div=document.getElementById("studentDetails");
 
 div.innerHTML=`
 
-<b>Name:</b> ${user.name}<br>
+<b>Name:</b> ${user.name || "N/A"}<br>
 <b>Reg No:</b> ${user.regno}<br>
 <b>Dept:</b> ${user.dept}<br>
 
@@ -28,46 +28,37 @@ ${user.subName6}: ${user.subMark6}
 showReply();
 }
 
-/* SEND REPORT */
 function reportIssue(){
 
-let issueText =
-document.getElementById("issue").value;
+let issue=document.getElementById("issue").value;
 
-let user =
-JSON.parse(localStorage.getItem("currentUser"));
+let user=JSON.parse(localStorage.getItem("currentUser"));
 
-let reports =
-JSON.parse(localStorage.getItem("reports")) || [];
+let reports=JSON.parse(localStorage.getItem("reports"))||[];
 
 reports.push({
-id: user.id,
-issue: issueText,
-reply: ""
+id:user.id,
+issue:issue,
+reply:""
 });
 
-localStorage.setItem("reports", JSON.stringify(reports));
+localStorage.setItem("reports",JSON.stringify(reports));
 
-alert("Report Sent");
+alert("Reported");
 }
 
-/* SHOW REPLY */
 function showReply(){
 
-let reports =
-JSON.parse(localStorage.getItem("reports")) || [];
+let reports=JSON.parse(localStorage.getItem("reports"))||[];
+let user=JSON.parse(localStorage.getItem("currentUser"));
 
-let user =
-JSON.parse(localStorage.getItem("currentUser"));
+let box=document.getElementById("replyBox");
 
-let box =
-document.getElementById("replyBox");
-
-box.innerHTML = "";
+box.innerHTML="";
 
 reports.forEach(r=>{
 if(r.id===user.id && r.reply){
-box.innerHTML += "<p>"+r.reply+"</p>";
+box.innerHTML+=`<p>${r.reply}</p>`;
 }
 });
 
@@ -77,4 +68,4 @@ function logout(){
 window.location.href="index.html";
 }
 
-window.onload = loadStudent;
+window.onload=loadStudent;
