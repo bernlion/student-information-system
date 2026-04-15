@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Staff Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Staff Dashboard</h2>
+
+<h3>Create Student Record</h3>
+
+<input id="studentId" placeholder="Student ID">
+<input id="studentPassword" placeholder="Password">
+
+<!-- FIXED NAME ISSUE -->
+<input id="studentName" placeholder="Name">
+
+<input id="regno" placeholder="Register No">
+<input id="dept" placeholder="Department">
+
+<input id="address" placeholder="Address">
+<input id="phone" placeholder="Phone Number">
+<input id="attendance" placeholder="Attendance %">
+
+<button onclick="toggleMarks()">
+Internal Marks
+</button>
+
+<div id="marksSection" class="hidden">
+
+<h3>Internal Marks</h3>
+
+<input id="subName1" placeholder="Subject 1 Name">
+<input id="subMark1" placeholder="Subject 1 Mark">
+
+<input id="subName2" placeholder="Subject 2 Name">
+<input id="subMark2" placeholder="Subject 2 Mark">
+
+<input id="subName3" placeholder="Subject 3 Name">
+<input id="subMark3" placeholder="Subject 3 Mark">
+
+<input id="subName4" placeholder="Subject 4 Name">
+<input id="subMark4" placeholder="Subject 4 Mark">
+
+<input id="subName5" placeholder="Subject 5 Name">
+<input id="subMark5" placeholder="Subject 5 Mark">
+
+<input id="subName6" placeholder="Subject 6 Name">
+<input id="subMark6" placeholder="Subject 6 Mark">
+
+</div>
+
+<button onclick="saveStudent()">
+Save Student
+</button>
+
+<h3>Student Records</h3>
+
+<button onclick="toggleStudents()">
+View Students
+</button>
+
+<table id="studentTable"></table>
+
+<h3>Student Reports</h3>
+
+<button onclick="toggleReports()">
+View Reports
+</button>
+
+<div id="reportSection" class="hidden"></div>
+
+<button onclick="logout()">Logout</button>
+
+</div>
+
+<script src="staff.js"></script>
+
+</body>
+</html>
