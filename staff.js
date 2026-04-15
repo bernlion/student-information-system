@@ -1,139 +1,85 @@
 let editingIndex = -1;
 
 /* Toggle Marks */
-
 function toggleMarks(){
-
-document
-.getElementById("marksSection")
+document.getElementById("marksSection")
 .classList.toggle("hidden");
-
 }
 
-/* Calculate Internal % */
-
+/* Calculate % */
 function calculatePercentage(s){
-
 let marks=[
-
-Number(s.subMark1)||0,
-Number(s.subMark2)||0,
-Number(s.subMark3)||0,
-Number(s.subMark4)||0,
-Number(s.subMark5)||0,
-Number(s.subMark6)||0
-
++ s.subMark1||0,+ s.subMark2||0,
++ s.subMark3||0,+ s.subMark4||0,
++ s.subMark5||0,+ s.subMark6||0
 ];
-
-let total =
-marks.reduce((a,b)=>a+b,0);
-
+let total=marks.reduce((a,b)=>a+b,0);
 return ((total/600)*100).toFixed(2);
-
 }
 
-/* Save Student */
-
+/* Save */
 function saveStudent(){
 
-let users =
-JSON.parse(localStorage.getItem("users"))
-|| [];
+let users=JSON.parse(localStorage.getItem("users"))||[];
 
-let student={
+let s={
+id:studentId.value,
+password:studentPassword.value,
 
-id: studentId.value,
-password: studentPassword.value,
+name:studentName.value,
 
-name: studentName.value,
+regno:regno.value,
+dept:dept.value,
 
-regno: regno.value,
-dept: dept.value,
+address:address.value,
+phone:phone.value,
+attendance:attendance.value,
 
-address: address.value,
-phone: phone.value,
-attendance: attendance.value,
+subName1:subName1.value,
+subMark1:subMark1.value,
 
-subName1: subName1.value,
-subMark1: subMark1.value,
+subName2:subName2.value,
+subMark2:subMark2.value,
 
-subName2: subName2.value,
-subMark2: subMark2.value,
+subName3:subName3.value,
+subMark3:subMark3.value,
 
-subName3: subName3.value,
-subMark3: subMark3.value,
+subName4:subName4.value,
+subMark4:subMark4.value,
 
-subName4: subName4.value,
-subMark4: subMark4.value,
+subName5:subName5.value,
+subMark5:subMark5.value,
 
-subName5: subName5.value,
-subMark5: subMark5.value,
-
-subName6: subName6.value,
-subMark6: subMark6.value
-
+subName6:subName6.value,
+subMark6:subMark6.value
 };
 
-/* EDIT MODE */
-
 if(editingIndex>-1){
-
-users[editingIndex]=student;
+users[editingIndex]=s;
 editingIndex=-1;
-
-alert("Student Updated");
-
+alert("Updated");
+}else{
+users.push(s);
+alert("Created");
 }
 
-/* CREATE MODE */
-
-else{
-
-users.push(student);
-
-alert("Student Created");
-
-}
-
-localStorage.setItem(
-"users",
-JSON.stringify(users)
-);
-
+localStorage.setItem("users",JSON.stringify(users));
 }
 
 /* Toggle Students */
-
 function toggleStudents(){
-
-let table =
-document.getElementById("studentTable");
-
-if(table.innerHTML===""){
-
-viewStudents();
-
-}
-else{
-
-table.innerHTML="";
-
+let t=document.getElementById("studentTable");
+t.innerHTML==="" ? viewStudents() : t.innerHTML="";
 }
 
-}
-
-/* View Students */
-
+/* View */
 function viewStudents(){
 
-let users =
-JSON.parse(localStorage.getItem("users"))
-|| [];
+let users=JSON.parse(localStorage.getItem("users"))||[];
 
-let table =
-document.getElementById("studentTable");
+let t=document.getElementById("studentTable");
 
-table.innerHTML=`
+t.innerHTML=`
 <tr>
 <th>ID</th>
 <th>Name</th>
@@ -142,50 +88,35 @@ table.innerHTML=`
 <th>Internal %</th>
 <th>Edit</th>
 <th>Save</th>
-</tr>
-`;
+</tr>`;
 
-users.forEach((u,index)=>{
+users.forEach((u,i)=>{
 
-let percent =
-calculatePercentage(u);
+let r=t.insertRow();
 
-let row =
-table.insertRow();
+r.insertCell(0).innerText=u.id;
+r.insertCell(1).innerText=u.name;
+r.insertCell(2).innerText=u.dept;
+r.insertCell(3).innerText=u.attendance;
+r.insertCell(4).innerText=calculatePercentage(u)+"%";
 
-row.insertCell(0).innerText=u.id;
-row.insertCell(1).innerText=u.name;
-row.insertCell(2).innerText=u.dept;
-row.insertCell(3).innerText=u.attendance;
+r.insertCell(5).innerHTML=
+`<button onclick="editStudent(${i})">Edit</button>`;
 
-row.insertCell(4).innerText=
-percent+"%";
-
-/* EDIT */
-
-row.insertCell(5).innerHTML=
-"<button onclick='editStudent("
-+index+")'>Edit</button>";
-
-/* SAVE */
-
-row.insertCell(6).innerHTML=
-"<button onclick='saveStudent()'>Save</button>";
+r.insertCell(6).innerHTML=
+`<button onclick="saveStudent()">Save</button>`;
 
 });
 
 }
 
 /* Edit */
+function editStudent(i){
 
-function editStudent(index){
+let users=JSON.parse(localStorage.getItem("users"));
+let u=users[i];
 
-let users =
-JSON.parse(localStorage.getItem("users"));
-
-let u = users[index];
-
-editingIndex=index;
+editingIndex=i;
 
 studentId.value=u.id;
 studentPassword.value=u.password;
@@ -219,72 +150,7 @@ subMark6.value=u.subMark6;
 
 }
 
-/* Toggle Reports */
-
-function toggleReports(){
-
-let div =
-document.getElementById("reportSection");
-
-div.classList.toggle("hidden");
-
-viewReports();
-
-}
-
-/* View Reports */
-
-function viewReports(){
-
-let reports =
-JSON.parse(localStorage.getItem("reports"))
-|| [];
-
-let div =
-document.getElementById("reportSection");
-
-div.innerHTML="";
-
-reports.forEach((rep,index)=>{
-
-let p =
-document.createElement("p");
-
-p.innerHTML=
-rep.id+" : "+rep.issue+
-
-"<br><button onclick='reply("
-+index+")'>Reply</button>";
-
-div.appendChild(p);
-
-});
-
-}
-
-/* Reply */
-
-function reply(index){
-
-let reports =
-JSON.parse(localStorage.getItem("reports"));
-
-reports[index].reply=
-"Your report was reviewed. Changes appear in 2–3 days";
-
-localStorage.setItem(
-"reports",
-JSON.stringify(reports)
-);
-
-alert("Reply Sent");
-
-}
-
 /* Logout */
-
 function logout(){
-
 window.location.href="index.html";
-
 }

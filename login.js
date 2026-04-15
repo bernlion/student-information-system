@@ -1,62 +1,24 @@
 function login(){
 
-let role =
-document.getElementById("role").value;
-
-let id =
-document.getElementById("loginId").value;
-
-let password =
-document.getElementById("loginPassword").value;
-
-/* Staff Login */
+let role=document.getElementById("role").value;
+let id=document.getElementById("loginId").value;
+let pass=document.getElementById("loginPassword").value;
 
 if(role==="staff"){
-
-if(id==="admin"
-&& password==="123"){
-
+if(id==="admin" && pass==="123"){
 window.location.href="staff.html";
-
+}else alert("Invalid");
 }
-else{
-
-alert("Invalid Staff Login");
-
-}
-
-}
-
-/* Student Login */
 
 if(role==="student"){
+let users=JSON.parse(localStorage.getItem("users"))||[];
 
-let users =
-JSON.parse(localStorage.getItem("users"))
-|| [];
+let u=users.find(x=>x.id===id && x.password===pass);
 
-let valid =
-users.find(u=>
-u.id===id &&
-u.password===password
-);
-
-if(valid){
-
-localStorage.setItem(
-"currentUser",
-JSON.stringify(valid)
-);
-
+if(u){
+localStorage.setItem("currentUser",JSON.stringify(u));
 window.location.href="student.html";
-
-}
-else{
-
-alert("Invalid Student Login");
-
-}
-
+}else alert("Invalid");
 }
 
 }
