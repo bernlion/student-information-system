@@ -153,4 +153,56 @@ subMark6.value=u.subMark6;
 /* Logout */
 function logout(){
 window.location.href="index.html";
+}/* Toggle Reports */
+function toggleReports(){
+
+let div = document.getElementById("reportSection");
+
+if(div.classList.contains("hidden")){
+div.classList.remove("hidden");
+viewReports();
+}else{
+div.classList.add("hidden");
+}
+
+}
+
+/* View Reports */
+function viewReports(){
+
+let reports =
+JSON.parse(localStorage.getItem("reports")) || [];
+
+let div =
+document.getElementById("reportSection");
+
+div.innerHTML = "";
+
+reports.forEach((rep,index)=>{
+
+let p = document.createElement("p");
+
+p.innerHTML =
+"<b>"+rep.id+"</b>: "+rep.issue+
+"<br><button onclick='sendReply("+index+")'>Reply</button>";
+
+div.appendChild(p);
+
+});
+
+}
+
+/* Send Reply */
+function sendReply(index){
+
+let reports =
+JSON.parse(localStorage.getItem("reports"));
+
+reports[index].reply =
+"Your report was reviewed. Changes will appear in 2–3 days";
+
+localStorage.setItem("reports", JSON.stringify(reports));
+
+alert("Reply Sent");
+
 }
